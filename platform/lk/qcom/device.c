@@ -22,7 +22,7 @@ void platform disp_clear(){
     fbcon_clear();
 }
 
-bool keyboard_read(lv_indev_drv_t * drv, lv_indev_data_t*data){
+bool platform_keyboard_read(lv_indev_drv_t * drv, lv_indev_data_t*data){
 	uint32_t volume_up_pressed = target_volume_up();
 	uint32_t volume_down_pressed = target_volume_down();
 	uint32_t power_button_pressed = pm8x41_get_pwrkey_is_pressed();
@@ -63,7 +63,7 @@ bool keyboard_read(lv_indev_drv_t * drv, lv_indev_data_t*data){
   return false; /*No buffering now so no more data read*/
 }
 
-void qcom_fbcon_disp_flush(lv_disp_t * disp,
+void platform_fbcon_disp_flush(lv_disp_t * disp,
     const lv_area_t * area, lv_color_t * color_p) {
     uint x, y;
     for (y = area -> y1; y <= area -> y2; y++) {
