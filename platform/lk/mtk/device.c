@@ -29,7 +29,7 @@ void platform_sleep(int time){
     thread_sleep(time);
 }
 
-void platform disp_clear(){
+void platform_disp_clear(){
     video_clean_screen();
 }
 
@@ -83,7 +83,7 @@ void platform_fbcon_disp_flush(lv_disp_t * disp,
   lv_disp_flush_ready(disp); /* Indicate you are ready with the flushing*/
 }
 
-int platform_init(){
+int platform_droidboot_init(){
     platform_storage_init();
     return 0;
 }
