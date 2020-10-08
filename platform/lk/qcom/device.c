@@ -8,6 +8,7 @@
 #include <target.h>
 #include <lib/lvgl.h>
 #include <aboot/aboot.h>
+#include <lvgl/lvgl.h>
 
 bool up = false;
 bool down = false;
@@ -74,5 +75,9 @@ void platform_fbcon_disp_flush(lv_disp_t * disp,
     }
     fbcon_flush(); //Flush fbcon, to show evrything on screen
     lv_disp_flush_ready(disp); /* Indicate you are ready with the flushing*/
+}
+
+int platform_init(){
+    return 0;
 }
 
