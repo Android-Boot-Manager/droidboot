@@ -19,7 +19,7 @@ void platform_sleep(int time){
     thread_sleep(time);
 }
 
-void platform disp_clear(){
+void platform_disp_clear(){
     fbcon_clear();
 }
 
@@ -63,6 +63,36 @@ bool platform_keyboard_read(lv_indev_drv_t * drv, lv_indev_data_t*data){
     }
   return false; /*No buffering now so no more data read*/
 }
+
+static int tick_thread(void * arg) {
+  /*Handle LitlevGL tasks (tickless mode)*/
+  while (1) {
+    lv_tick_inc(5);
+    thread_sleep(5);
+  }
+
+  return 0;
+}
+
+static int task_thread(void * arg) {
+  /*Handle LitlevGL tasks (tickless mode)*/
+  while (1) {
+    lv_task_handler();
+    thread_sleep(1);
+  }
+
+  return 0;
+}
+
+void platform_create_lvgl_threads(){
+    thread_t *task;
+    task=thread_create("task", & task_thread, NULL, DEFAULT_PRIORITY, DEFAULT_STACK_SIZE);
+    thread_resume(task);
+    thread_t *tick;
+    tick=thread_create("tick", & tick_thread, NULL, DEFAULT_PRIORITY, DEFAULT_STACK_SIZE);
+    thread_resume(tick);
+}
+
 
 void platform_fbcon_disp_flush(lv_disp_t * disp,
     const lv_area_t * area, lv_color_t * color_p) {
