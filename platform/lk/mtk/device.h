@@ -4,4 +4,5 @@ void platform_disp_clear();
 bool platform_keyboard_read(lv_indev_drv_t * drv, lv_indev_data_t*data);
 void platform_fbcon_disp_flush(lv_disp_t * disp,
     const lv_area_t * area, lv_color_t * color_p);
+void platform_thread_create(char name, void (*thread_func));
 int platform_droidboot_init();

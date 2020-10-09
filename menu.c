@@ -2,17 +2,57 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef platform_qcom
-#include <lvgl/lvgl.h>
-#include "platform/lk/qom/device.h"
-#elif defined platform_mtk
+
+
 #include "../lvgl/lvgl.h"
-#include "platform/lk/qom/device.h"
-#endif
+#include "platform/lk/mtk/device.h"
+
+lv_obj_t *menu = NULL;
+
+void * tick_thread (void *args)
+{
+      while(1) {
+        platform_sleep(10);   /*Sleep for 5 millisecond*/
+        lv_tick_inc(10);      /*Tell LVGL that 5 milliseconds were elapsed*/
+    }
+}
+
+void * task_thread (void *args)
+{
+    while(1) {
+        lv_task_handler();
+        platform_sleep(10);
+    }
+}
 
 void droidboot_init()
 {
-    platform_droidboot_init();
-    platform_disp_clear();
-    while(1);
+    lv_init();
+    static lv_disp_buf_t disp_buf;
+    static lv_color_t buf[LV_HOR_RES_MAX * 10]; /*Declare a buffer for 10 lines*/
+    lv_disp_buf_init( & disp_buf, buf, NULL, LV_HOR_RES_MAX * 10); /*Initialize the display buffer*/
+    lv_disp_drv_t disp_drv; /*Descriptor of a display driver*/
+    lv_disp_drv_init( & disp_drv); /*Basic initialization*/
+    disp_drv.flush_cb = platform_fbcon_disp_flush; /*Set your driver function*/
+    disp_drv.buffer = & disp_buf; /*Assign the buffer to the display*/
+    lv_disp_drv_register( & disp_drv); /*Finally register the driver*/
+    //platform_sleep(300);
+   // platform_thread_create("tick", tick_thread);
+    platform_thread_create("task", task_thread);
+    video_printf("droidboot platform init\n");
+    //platform_droidboot_init();
+    video_printf("droidboot init end\n");
+    video_printf("droidboot clear\n");
+    //platform_disp_clear();
+    video_printf("droidboot loop\n");
+    //lv_demo_widgets();
+     //menu = lv_obj_create(NULL, NULL);
+    //lv_scr_load(menu);
+    //lv_obj_t * win = lv_win_create(lv_scr_act(), NULL);
+    //lv_win_set_title(win, "Boot menu"); 
+    while(1) {
+        platform_sleep(10);   /*Sleep for 5 millisecond*/
+        lv_task_handler();
+        lv_tick_inc(10);      /*Tell LVGL that 5 milliseconds were elapsed*/
+    }
 }

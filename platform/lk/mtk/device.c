@@ -83,6 +83,12 @@ void platform_fbcon_disp_flush(lv_disp_t * disp,
   lv_disp_flush_ready(disp); /* Indicate you are ready with the flushing*/
 }
 
+void platform_thread_create(char name, void (*thread_func)()){
+    thread_t *thr;
+    thr=thread_create(name, &thread_func, NULL, HIGHEST_PRIORITY, 16*1024);
+    thread_resume(thr);
+}
+
 int platform_droidboot_init(){
     platform_storage_init();
     return 0;
