@@ -27,7 +27,10 @@ void * task_thread (void *args)
 
 void droidboot_init()
 {
+    video_printf("lv init\n");
     lv_init();
+    video_printf("droidboot platform init\n");
+    platform_droidboot_init();
     static lv_disp_buf_t disp_buf;
     static lv_color_t buf[LV_HOR_RES_MAX * 10]; /*Declare a buffer for 10 lines*/
     lv_disp_buf_init( & disp_buf, buf, NULL, LV_HOR_RES_MAX * 10); /*Initialize the display buffer*/
@@ -37,10 +40,10 @@ void droidboot_init()
     disp_drv.buffer = & disp_buf; /*Assign the buffer to the display*/
     lv_disp_drv_register( & disp_drv); /*Finally register the driver*/
     //platform_sleep(300);
+    video_printf("lvgl thread begin\n");
     platform_create_lvgl_threads();
-    video_printf("droidboot platform init\n");
-    //platform_droidboot_init();
-    video_printf("droidboot init end\n");
+    
+    video_printf("lvgl thread end\n");
     video_printf("droidboot clear\n");
     //platform_disp_clear();
     video_printf("droidboot loop\n");

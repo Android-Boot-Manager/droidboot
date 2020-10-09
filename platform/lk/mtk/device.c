@@ -116,6 +116,7 @@ void platform_fbcon_disp_flush(lv_disp_t * disp,
 
 int platform_droidboot_init(){
     platform_storage_init();
+    mtk_wdt_disable();
     return 0;
 }
 
