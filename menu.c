@@ -5,7 +5,7 @@
 
 
 #include "../lvgl/lvgl.h"
-#include "platform/lk/mtk/device.h"
+#include "platform/lk/device.h"
 
 lv_obj_t *menu = NULL;
 
