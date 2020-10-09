@@ -70,6 +70,37 @@ bool platform_keyboard_read(lv_indev_drv_t * drv, lv_indev_data_t*data){
   return false; /*No buffering now so no more data read*/
 }
 
+static int tick_thread(void * arg) {
+  /*Handle LitlevGL tasks (tickless mode)*/
+  while (1) {
+    lv_tick_inc(1);
+    thread_sleep(1);
+  }
+
+  return 0;
+}
+
+static int task_thread(void * arg) {
+  /*Handle LitlevGL tasks (tickless mode)*/
+  while (1) {
+    lv_task_handler();
+    thread_sleep(1);
+  }
+
+  return 0;
+}
+
+void platform_create_lvgl_threads(){
+    thread_t *task;
+    task=thread_create("task", & task_thread, NULL, HIGHEST_PRIORITY, 16*1024);
+    thread_resume(task);
+    thread_t *tick;
+    task=thread_create("tick", & tick_thread, NULL, HIGHEST_PRIORITY, 16*1024);
+    thread_resume(tick);
+}
+
+
+
 void platform_fbcon_disp_flush(lv_disp_t * disp,
     const lv_area_t * area, lv_color_t * color_p) {
     uint x, y;
@@ -81,12 +112,6 @@ void platform_fbcon_disp_flush(lv_disp_t * disp,
     }
   mt_disp_update(0, 0, 1080, 2340);
   lv_disp_flush_ready(disp); /* Indicate you are ready with the flushing*/
-}
-
-void platform_thread_create(char name, void (*thread_func)()){
-    thread_t *thr;
-    thr=thread_create(name, &thread_func, NULL, HIGHEST_PRIORITY, 16*1024);
-    thread_resume(thr);
 }
 
 int platform_droidboot_init(){

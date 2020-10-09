@@ -37,8 +37,7 @@ void droidboot_init()
     disp_drv.buffer = & disp_buf; /*Assign the buffer to the display*/
     lv_disp_drv_register( & disp_drv); /*Finally register the driver*/
     //platform_sleep(300);
-   // platform_thread_create("tick", tick_thread);
-    platform_thread_create("task", task_thread);
+    platform_create_lvgl_threads();
     video_printf("droidboot platform init\n");
     //platform_droidboot_init();
     video_printf("droidboot init end\n");
@@ -50,9 +49,5 @@ void droidboot_init()
     //lv_scr_load(menu);
     //lv_obj_t * win = lv_win_create(lv_scr_act(), NULL);
     //lv_win_set_title(win, "Boot menu"); 
-    while(1) {
-        platform_sleep(10);   /*Sleep for 5 millisecond*/
-        lv_task_handler();
-        lv_tick_inc(10);      /*Tell LVGL that 5 milliseconds were elapsed*/
-    }
+
 }
