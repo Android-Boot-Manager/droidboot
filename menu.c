@@ -27,9 +27,7 @@ void * task_thread (void *args)
 
 void droidboot_init()
 {
-    video_printf("lv init\n");
     lv_init();
-    video_printf("droidboot platform init\n");
     platform_droidboot_init();
     static lv_disp_buf_t disp_buf;
     static lv_color_t buf[LV_HOR_RES_MAX * 10]; /*Declare a buffer for 10 lines*/
@@ -39,18 +37,9 @@ void droidboot_init()
     disp_drv.flush_cb = platform_fbcon_disp_flush; /*Set your driver function*/
     disp_drv.buffer = & disp_buf; /*Assign the buffer to the display*/
     lv_disp_drv_register( & disp_drv); /*Finally register the driver*/
-    //platform_sleep(300);
-    video_printf("lvgl thread begin\n");
+    platform_sleep(300);
     platform_create_lvgl_threads();
-    
-    video_printf("lvgl thread end\n");
-    video_printf("droidboot clear\n");
-    //platform_disp_clear();
-    video_printf("droidboot loop\n");
-    //lv_demo_widgets();
-     //menu = lv_obj_create(NULL, NULL);
-    //lv_scr_load(menu);
-    //lv_obj_t * win = lv_win_create(lv_scr_act(), NULL);
-    //lv_win_set_title(win, "Boot menu"); 
+    platform_disp_clear();
+
 
 }
