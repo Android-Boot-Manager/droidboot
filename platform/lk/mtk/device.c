@@ -95,7 +95,7 @@ void platform_create_lvgl_threads(){
     task=thread_create("task", & task_thread, NULL, HIGHEST_PRIORITY, 16*1024);
     thread_resume(task);
     thread_t *tick;
-    task=thread_create("tick", & tick_thread, NULL, HIGHEST_PRIORITY, 16*1024);
+    tick=thread_create("tick", & tick_thread, NULL, HIGHEST_PRIORITY, 16*1024);
     thread_resume(tick);
 }
 
