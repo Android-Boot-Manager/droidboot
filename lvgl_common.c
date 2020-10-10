@@ -5,7 +5,7 @@
 
 
 #include "../lvgl/lvgl.h"
-#include "platform/lk/mtk/device.h"
+#include "platform/lk/device.h"
 
 void lvgl_common_init()
 {
